@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+      
+    <link href='https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons' rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.min.css" rel="stylesheet">
+    <link href="https://cdn.materialdesignicons.com/3.2.89/css/materialdesignicons.min.css" rel="stylesheet">
+    <style>
+        .text-justify {
+            text-align: justify;
+        }
+
+        [v-cloak] > * { display:none }
+    </style>
+</head>
+
+<body>
+
+    <div id="app" v-cloak>
+        <v-app darks>
+            <!-- <v-navigation-drawer app></v-navigation-drawer> -->
+            <v-toolbar class="deep-purples" app>
+                <!-- <v-toolbar-side-icon></v-toolbar-side-icon> -->
+                <v-toolbar-title>Brandname</v-toolbar-title>
+                <v-spacer></v-spacer>
+                <v-toolbar-items>
+                </v-toolbar-items>
+
+                <!-- if loged-in user -->
+                <div v-if="$store.getters.user">
+                    <v-avatar>
+                        <img :src="$store.getters.user.avatar">
+                    </v-avatar>
+                    <v-btn @click="logout">
+                        Sign out
+                    </v-btn>
+                </div>
+                <!-- else -->
+                <v-btn v-else
+                        color="primary"
+                        class="hidden-xs-only"
+                        :disabled="$store.getters.loading"
+                        @click="github_login">
+                    <v-icon>mdi-github-circle</v-icon>&nbsp;&nbsp;Sign in
+                </v-btn>
+                <!-- end if -->
+
+            </v-toolbar>
+            
+            <!-- if loading -->
+            <v-content v-if="!$store.getters.loading">
+                <router-view></router-view>
+            </v-content>
+            <!-- else -->
+            <v-content v-else>
+                <v-container grid-list-xl text-xs-center>
+                    <v-progress-circular :size="100" :width="6" color="primary" indeterminate>                    
+                    </v-progress-circular>
+                </v-container>
+            </v-content>
+            <!-- end if -->
+            
+            <v-footer app dark>
+                <div class="ml-3">
+                    Copyright &copy; Brandname - 2018
+                </div>
+                <v-spacer></v-spacer>
+                <div class="mr-3 hidden-xs-only">
+                    Made with <v-icon class="red--text" small>favorite</v-icon>
+                    by <a class="white--text" href="https://vuetifyjs.com" target="_blank">Vuetify</a>
+                    and <a class="white--text" href="#" target="_blank">Hoang Tuan</a>
+                </div>
+            </v-footer>
+        </v-app>
+    </div>
+
+    <script src="https://npmcdn.com/vue/dist/vue.js"></script>
+    <script src="https://npmcdn.com/vue-router/dist/vue-router.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vuex/2.1.1/vuex.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.7.1/firebase.js"></script>
+
+    <script src="js/db.js"></script>
+
+    <script src="components/landing.js"></script>
+    <script src="components/console.js"></script>
+    <script src="components/notfound.js"></script>
+
+    <script src="vue/router.js"></script>
+    <script src="vue/store.js"></script>
+    <script src="vue/main.js"></script>
+</body>
+
+</html>
