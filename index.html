@@ -35,9 +35,12 @@
                     <v-avatar>
                         <img :src="$store.getters.user.avatar">
                     </v-avatar>
-                    <v-btn @click="logout">
-                        Sign out
-                    </v-btn>
+                    <v-tooltip left>
+                        <v-btn @click="logout" slot="activator">
+                            Sign out
+                        </v-btn>
+                        <span>Sign out of <br/><b>{{ $store.getters.user.email }}</b></span>
+                    </v-tooltip>
                 </div>
                 <!-- else -->
                 <v-btn v-else
@@ -58,8 +61,8 @@
             <!-- else -->
             <v-content v-else>
                 <v-container grid-list-xl text-xs-center>
-                    <v-progress-circular :size="100" :width="6" color="primary" indeterminate>                    
-                    </v-progress-circular>
+                    <!-- <v-progress-circular :size="100" :width="6" color="primary" indeterminate></v-progress-circular> -->
+                    <v-progress-linear :indeterminate="true"></v-progress-linear>
                 </v-container>
             </v-content>
             <!-- end if -->
