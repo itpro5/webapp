@@ -30,18 +30,31 @@ let app_store = new Vuex.Store({
                     if (result !== undefined && 'credential' in result) {
                         // This gives you a GitHub Access Token. You can use it to access the GitHub API.
                         var token = result.credential.accessToken
-                        console.log('signInWithPopup() - token: ', token)
+                        console.log('signInWithPopup() - github access token: ', token)
             
                         // The signed-in user info.
                         var user = result.user
                         console.log('signInWithPopup() - user: ', user)
-                        commit('setUser', {
-                            email: user.email,
-                            avatar: user.photoURL
-                        })
-                        app_router.push('/console')
+
+                        user.getIdToken(/* forceRefresh */ true).then(
+                            id_token => {
+                                console.log('signInWithPopup() - getIdToken value: ', id_token)
+                                commit('setUser', {
+                                    email: user.email,
+                                    avatar: user.photoURL,
+                                    fib_token: id_token
+                                })
+                                app_router.push('/console')
+                            }
+                        ).catch(
+                            error => {
+                                console.log('signInWithPopup() - getIdToken error: ', error.message)
+                            }
+                        )                        
                     }
                     commit('setLoading', false)
+
+                    
                 }
             ).catch(
                 function(error) {
@@ -51,15 +64,37 @@ let app_store = new Vuex.Store({
                     commit('setLoading', false)
                 }
             )
+            
+            // fibAuth.currentUser.getIdToken(/* forceRefresh */ true).then(
+            //     id_token => {
+            //         console.log('signInWithPopup() - id_token: ', id_token)
+            //     }
+            // ).catch(
+            //     error => {
+            //         console.log('signInWithPopup() - getIdToken error: ', error.message)
+            //     }
+            // )
         },
-        auto_login({commit}, payload) {
-            commit('setUser', {
-                email: payload.email,
-                avatar: payload.photoURL
-            })
-            app_router.push('/console')
+        auto_login({commit}, /* user */ payload) {
+            console.log('auto_login() begin...')
+            payload.getIdToken(/* forceRefresh */ true).then(
+                id_token => {
+                    console.log('auto_login() - getIdToken value: ', id_token)
+                    commit('setUser', {
+                        email: payload.email,
+                        avatar: payload.photoURL,
+                        fib_token: id_token
+                    })
+                    app_router.push('/console')
+                }
+            ).catch(
+                error => {
+                    console.log('auto_login() - getIdToken error: ', error.message)
+                }
+            )
         },
         logout({commit}, payload) {
+            console.log('logout() begin...')
             fibAuth.signOut()
             commit('setUser', null)
             app_router.push('/')
