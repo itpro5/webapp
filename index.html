@@ -31,16 +31,16 @@
                 </v-toolbar-items>
 
                 <!-- if loged-in user -->
-                <div v-if="$store.getters.user">
-                    <v-avatar>
-                        <img :src="$store.getters.user.avatar">
-                    </v-avatar>
+                <div v-if="$store.getters.user">            
                     <v-tooltip left>
-                        <v-btn @click="logout" slot="activator">
-                            Sign out
-                        </v-btn>
-                        <span>Sign out of <br/><b>{{ $store.getters.user.email }}</b></span>
+                        <v-avatar slot="activator">
+                            <img :src="$store.getters.user.avatar">
+                        </v-avatar>
+                        <span>GitHub account<br/><b>{{ $store.getters.user.email }}</b></span>
                     </v-tooltip>
+                    <v-btn @click="logout">
+                        Sign out
+                    </v-btn>
                 </div>
                 <!-- else -->
                 <v-btn v-else
@@ -90,7 +90,7 @@
     <script src="js/db.js"></script>
 
     <script src="components/landing.js"></script>
-    <script src="components/console.js"></script>
+    <script src="components/register.js"></script>
     <script src="components/notfound.js"></script>
 
     <script src="vue/router.js"></script>

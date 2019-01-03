@@ -1,6 +1,6 @@
 let app_store = new Vuex.Store({
     state: {
-        loading: false,
+        loading: false, // sign in loading
         user: null
     },
     mutations: {
@@ -41,10 +41,10 @@ let app_store = new Vuex.Store({
                                 console.log('signInWithPopup() - getIdToken value: ', id_token)
                                 commit('setUser', {
                                     email: user.email,
-                                    avatar: user.photoURL,
-                                    fib_token: id_token
+                                    avatar: user.photoURL
+                                    // fib_token: id_token
                                 })
-                                app_router.push('/console')
+                                app_router.push('/register')
                             }
                         ).catch(
                             error => {
@@ -82,10 +82,10 @@ let app_store = new Vuex.Store({
                     console.log('auto_login() - getIdToken value: ', id_token)
                     commit('setUser', {
                         email: payload.email,
-                        avatar: payload.photoURL,
-                        fib_token: id_token
+                        avatar: payload.photoURL
+                        // fib_token: id_token
                     })
-                    app_router.push('/console')
+                    app_router.push('/register')
                 }
             ).catch(
                 error => {

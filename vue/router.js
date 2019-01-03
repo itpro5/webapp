@@ -2,7 +2,7 @@ const app_router = new VueRouter({
     // mode: 'history',
     routes: [
         { path: '/', component: LandingPage },
-        { path: '/console', component: ConsolePage, meta: {_auth: true} },
+        { path: '/register', component: RegisterPage, meta: {_auth: true} },
         { path: '*', component: NotFoundPage}
     ]
 })

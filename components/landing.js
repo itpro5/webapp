@@ -48,7 +48,6 @@ const LandingPage = {
             window.open(_url, '_blank')
         },
         github_login: function() {
-            console.log('Login from landing page')
             this.$store.dispatch('github_login')
         }
     }

@@ -16,3 +16,6 @@ githubProvider.setCustomParameters({
 githubProvider.addScope('user');
 
 fibAuth = firebase.auth()
+
+// Initialize Cloud Functions through Firebase
+var fibFunc = firebase.functions();
