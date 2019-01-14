@@ -127,7 +127,7 @@ const RegisterPage = {
                                 </v-layout>
                             </v-stepper-content>
                             <v-stepper-content step="4">
-                                <v-btn @click="current_step = 1">Go to Dashboard</v-btn>
+                                <v-btn color="primary" to="/dashboard">Go to Dashboard</v-btn>
                             </v-stepper-content>
                         </v-stepper-items>
                     </v-stepper>
@@ -260,6 +260,7 @@ const RegisterPage = {
                         if (this.forked_repo_url != ''
                             && this.forked_repo_api_url != ''
                             && this.forked_repo_id) {
+                            localStorage.setItem('github_repo_id', this.forked_repo_id)
                             this.current_step = 3
                         }
                         // reset

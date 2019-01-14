@@ -2,7 +2,8 @@ const app_router = new VueRouter({
     // mode: 'history',
     routes: [
         { path: '/', component: LandingPage },
-        { path: '/register', component: RegisterPage, meta: {_auth: true} },
+        { path: '/register', component: RegisterPage, meta: {_auth: true, _reg: true} },
+        { path: '/dashboard', component: DashboardPage, meta: {_auth: true} },
         { path: '*', component: NotFoundPage}
     ]
 })
@@ -13,6 +14,16 @@ app_router.beforeEach((to, from, next) => {
     if (auth_required && !is_authenticated) {
         next('/')
     } else {
-        next()
+        const _reg = to.matched.some(record => record.meta._reg)
+        if (_reg) {
+            const repo_id = localStorage.getItem('github_repo_id')
+            if (!repo_id) {
+                next()
+            } else {
+                next('/dashboard')
+            }
+        } else {
+            next()
+        }
     }
 })

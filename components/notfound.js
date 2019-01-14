@@ -1,7 +1,7 @@
 const NotFoundPage = {
     template: `
         <div>
-            This page is not found!!!
+            Page not found!!!
         </div>
     `,
     methods: {
