@@ -5,7 +5,7 @@ const LandingPage = {
                 <v-flex xs12>
                     <v-alert :value="true" color="info" icon="priority_high" outline>
                         <div class="headline">
-                            Let's Change The Way We Write & Share the Portfolio/CV
+                            Let's Change The Way We Write & Share our Portfolio/CV
                             in Software Industry... as a Dev Guy
                         </div>
                     </v-alert>
@@ -36,7 +36,7 @@ const LandingPage = {
                     </v-menu>
                     <v-btn large color="primary" @click="github_login">
                         <v-icon>mdi-github-circle</v-icon>
-                        &nbsp;&nbsp;Continue with GitHub
+                        &nbsp;&nbsp;Start with GitHub
                     </v-btn>
                 </v-flex>
             </v-layout>

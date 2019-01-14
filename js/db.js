@@ -14,6 +14,7 @@ githubProvider.setCustomParameters({
     'allow_signup': 'true'
 });
 githubProvider.addScope('user');
+githubProvider.addScope('public_repo');
 
 fibAuth = firebase.auth()
 

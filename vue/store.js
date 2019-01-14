@@ -1,5 +1,6 @@
 let app_store = new Vuex.Store({
     state: {
+        now_api_base_url: 'https://apinow-9ait5znqx.now.sh',
         loading: false, // sign in loading
         user: null
     },
@@ -17,6 +18,9 @@ let app_store = new Vuex.Store({
         },
         user(state) {
             return state.user
+        },
+        now_api_base_url(state) {
+            return state.now_api_base_url
         }
     },
     actions: {
@@ -27,10 +31,27 @@ let app_store = new Vuex.Store({
             fibAuth.signInWithPopup(githubProvider).then(
                 function(result) {
                     console.log('signInWithPopup() - getting result...')
-                    if (result !== undefined && 'credential' in result) {
+                    if (result !== undefined && 'credential' in result) {                        
                         // This gives you a GitHub Access Token. You can use it to access the GitHub API.
-                        var token = result.credential.accessToken
-                        console.log('signInWithPopup() - github access token: ', token)
+                        var github_token = result.credential.accessToken
+                        console.log('signInWithPopup() - github access token: ', github_token)
+
+                        // Save github token for latter use
+                        localStorage.setItem('github_token', github_token);
+
+                        // Retrieve github username
+                        axios.get('https://api.github.com/user', {
+                            headers: {'Authorization': 'token ' + github_token}
+                        }).then(
+                            result => {
+                                console.log('github user info result:', result)
+                                localStorage.setItem('github_login', result.data.login)
+                            }
+                        ).catch(
+                            error => {
+                                console.log('github user info error:', error)
+                            }
+                        )
             
                         // The signed-in user info.
                         var user = result.user
@@ -41,9 +62,10 @@ let app_store = new Vuex.Store({
                                 console.log('signInWithPopup() - getIdToken value: ', id_token)
                                 commit('setUser', {
                                     email: user.email,
-                                    avatar: user.photoURL
-                                    // fib_token: id_token
+                                    avatar: user.photoURL,
+                                    fib_token: id_token
                                 })
+                                commit('setLoading', false)
                                 app_router.push('/register')
                             }
                         ).catch(
@@ -51,10 +73,7 @@ let app_store = new Vuex.Store({
                                 console.log('signInWithPopup() - getIdToken error: ', error.message)
                             }
                         )                        
-                    }
-                    commit('setLoading', false)
-
-                    
+                    }                    
                 }
             ).catch(
                 function(error) {
@@ -64,16 +83,6 @@ let app_store = new Vuex.Store({
                     commit('setLoading', false)
                 }
             )
-            
-            // fibAuth.currentUser.getIdToken(/* forceRefresh */ true).then(
-            //     id_token => {
-            //         console.log('signInWithPopup() - id_token: ', id_token)
-            //     }
-            // ).catch(
-            //     error => {
-            //         console.log('signInWithPopup() - getIdToken error: ', error.message)
-            //     }
-            // )
         },
         auto_login({commit}, /* user */ payload) {
             console.log('auto_login() begin...')
@@ -82,8 +91,8 @@ let app_store = new Vuex.Store({
                     console.log('auto_login() - getIdToken value: ', id_token)
                     commit('setUser', {
                         email: payload.email,
-                        avatar: payload.photoURL
-                        // fib_token: id_token
+                        avatar: payload.photoURL,
+                        fib_token: id_token
                     })
                     app_router.push('/register')
                 }
