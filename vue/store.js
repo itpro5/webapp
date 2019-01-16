@@ -1,6 +1,6 @@
 let app_store = new Vuex.Store({
     state: {
-        now_api_base_url: 'https://apinow-9ait5znqx.now.sh',
+        now_api_base_url: 'https://apinow-a4kjdeyhn.now.sh',
         loading: false, // sign in loading
         user: null
     },
@@ -24,7 +24,7 @@ let app_store = new Vuex.Store({
         }
     },
     actions: {
-        github_login({ commit }, payload) {
+        github_login({ commit, state }, payload) {
             console.log('github_login() - github login processing...')
             console.log('github_login() - payload: ', payload)
             commit('setLoading', true)
@@ -40,7 +40,7 @@ let app_store = new Vuex.Store({
                         localStorage.setItem('github_token', github_token);
 
                         // Retrieve github username
-                        axios.get('https://api.github.com/user', {
+                        /*axios.get('https://api.github.com/user', {
                             headers: {'Authorization': 'token ' + github_token}
                         }).then(
                             result => {
@@ -51,7 +51,7 @@ let app_store = new Vuex.Store({
                             error => {
                                 console.log('github user info error:', error)
                             }
-                        )
+                        )*/
             
                         // The signed-in user info.
                         var user = result.user
@@ -65,8 +65,38 @@ let app_store = new Vuex.Store({
                                     avatar: user.photoURL,
                                     fib_token: id_token
                                 })
-                                commit('setLoading', false)
-                                app_router.push('/register')
+
+                                //
+                                // Get extra info of user
+                                //
+                                axios.all([
+                                    axios.get('https://api.github.com/user', {headers: {'Authorization': 'token ' + github_token}}),
+                                    axios.get(`${state.now_api_base_url}/get_user_info.js`, {headers: {'Fibtoken': id_token}})
+                                ]).then(
+                                    axios.spread(
+                                        (resp1, resp2) => {
+                                            console.log('resp1:', resp1)
+                                            console.log('resp2:', resp2)
+
+                                            localStorage.setItem('github_login', resp1.data.login)
+                                            //
+                                            // Page redirect
+                                            //                                            
+                                            if ('repo_id' in resp2.data) {
+                                                commit('setLoading', false)
+                                                localStorage.setItem('github_repo_id', resp2.data.repo_id)
+                                                app_router.push('/dashboard')
+                                            } else {
+                                                commit('setLoading', false)
+                                                app_router.push('/register')
+                                            }
+                                        }
+                                    )
+                                ).catch(
+                                    error => {
+                                        console.log('error:', error)
+                                    }
+                                )
                             }
                         ).catch(
                             error => {
