@@ -33,7 +33,7 @@ const RegisterPage = {
                             <v-stepper-content step="1">
                                 <v-layout column align-center>
                                     <v-flex xs12>
-                                        <div class="body-2">Register a personal domain name for your page</div>
+                                        <div class="body-2">Register a personal domain name for your itpro5 page</div>
                                     </v-flex>
                                     <v-flex xs12>
                                         <v-alert type="error"
@@ -45,8 +45,8 @@ const RegisterPage = {
                                     </v-flex>
                                     <v-flex xs12 sm6 md4>
                                         <v-form v-model="subdomain_reg_form_valid">
-                                            <v-text-field placeholder="johndoe"
-                                                            suffix=".branding.com"
+                                            <v-text-field :placeholder="get_place_holder"
+                                                            suffix=".itpro5.com"
                                                             v-model="subdomain"
                                                             :counter="7"
                                                             :rules="subdomain_rules"
@@ -79,10 +79,10 @@ const RegisterPage = {
                                         <v-form>
                                             <v-radio-group value="advanced" v-model="fork_template">
                                                 <v-radio value="advanced">
-                                                    <div slot="label">Advanced (included well-crafted portfolio & cv example pages)</div>
+                                                    <div slot="label">Advanced (included Portfolio & CV example pages)</div>
                                                 </v-radio>
                                                 <v-radio value="basic">
-                                                    <div slot="label">Basic (included only simple index page)</div>
+                                                    <div slot="label">Basic (included only CV example page)</div>
                                                 </v-radio>
                                             </v-radio-group>
                                             <v-btn color="primary" @click="fork_now"
@@ -127,7 +127,24 @@ const RegisterPage = {
                                 </v-layout>
                             </v-stepper-content>
                             <v-stepper-content step="4">
-                                <v-btn color="primary" to="/dashboard">Go to Dashboard</v-btn>
+                                <v-layout column align-center>
+                                    <v-flex xs12>
+                                        <div class="body-2">
+                                            Congrats, your story is just begin!
+                                        </div>
+                                    </v-flex>
+                                    <v-flex xs12>
+                                        <ul class="py-3 text-xs-left">
+                                            <li>Now, you could visit the Dashboard page for more information</li>
+                                            <li>Please note that, you may have to wait for several minutes for sub-domain registering takes effect</li>
+                                            <li>Next step, you may want to Pull the GitHub repository and let your idea flies with HTML/CSS/JS codes</li>
+                                            <li>When you're ready, Push all code changes to the GitHub repository</li>
+                                        </ul>
+                                    </v-flex>
+                                    <v-flex xs12 sm6 md4>
+                                        <v-btn color="primary" to="/dashboard">Go to Dashboard</v-btn>
+                                    </v-flex>
+                                </v-layout>
                             </v-stepper-content>
                         </v-stepper-items>
                     </v-stepper>
@@ -175,6 +192,9 @@ const RegisterPage = {
         },
         forked_repo_setting_page: function() {
             return this.forked_repo_url + '/settings'
+        },
+        get_place_holder: function() {
+            return localStorage.getItem('github_login')
         }
     },
     methods: {
@@ -184,7 +204,7 @@ const RegisterPage = {
 
             const github_login = localStorage.getItem('github_login')
             const vue_instance = this
-            const post_url = `${this.$store.getters.now_api_base_url}/reg_domain.js?subdomain=${this.subdomain}&github_login=${github_login}`            
+            const post_url = `${this.$store.getters.now_api_base_url}/reg_domain?subdomain=${this.subdomain}&github_login=${github_login}`            
             axios.post(post_url, {}, {
                 headers: {'Fibtoken': this.$store.getters.user.fib_token}
             }).then(
@@ -246,7 +266,7 @@ const RegisterPage = {
 
             const github_token = localStorage.getItem('github_token')
             const vue_instance = this
-            const post_url = `${this.$store.getters.now_api_base_url}/fork_repo.js?repo_path=${this.github_repo_path}`
+            const post_url = `${this.$store.getters.now_api_base_url}/fork_repo?repo_path=${this.github_repo_path}`
             axios.post(post_url, {}, {
                 headers: {'github-token': github_token}
             }).then(
@@ -288,7 +308,7 @@ const RegisterPage = {
             
             const github_token = localStorage.getItem('github_token')
             const vue_instance = this
-            const post_url = `${this.$store.getters.now_api_base_url}/cname_commit.js`
+            const post_url = `${this.$store.getters.now_api_base_url}/cname_commit`
             axios.post(post_url, {
                 forked_repo_api_url: this.forked_repo_api_url,
                 cname: this.subdomain
@@ -299,13 +319,14 @@ const RegisterPage = {
                     console.log('finalize() result: ', result)
                     if (result && result.data.code == 'OK') {
                         // Assign repo to user
-                        const url2 = `${this.$store.getters.now_api_base_url}/assign_repo.js?subdomain=${this.subdomain}&repoid=${this.forked_repo_id}`            
+                        const url2 = `${this.$store.getters.now_api_base_url}/assign_repo?subdomain=${this.subdomain}&repoid=${this.forked_repo_id}`            
                         axios.post(url2, {}, {
                             headers: {'Fibtoken': this.$store.getters.user.fib_token}
                         }).then(
                             result => {
                                 console.log('assign_repo() result: ', result)
                                 if (result && result.data.code == 'OK') {
+                                    localStorage.setItem('github_cname', this.subdomain)
                                     // Move forward
                                     this.current_step = 4
                                     // Reset

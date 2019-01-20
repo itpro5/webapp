@@ -1,6 +1,6 @@
 let app_store = new Vuex.Store({
     state: {
-        now_api_base_url: 'https://apinow-a4kjdeyhn.now.sh',
+        now_api_base_url: 'https://apinow-c0vqyhu7i.now.sh',
         loading: false, // sign in loading
         user: null
     },
@@ -71,7 +71,7 @@ let app_store = new Vuex.Store({
                                 //
                                 axios.all([
                                     axios.get('https://api.github.com/user', {headers: {'Authorization': 'token ' + github_token}}),
-                                    axios.get(`${state.now_api_base_url}/get_user_info.js`, {headers: {'Fibtoken': id_token}})
+                                    axios.get(`${state.now_api_base_url}/get_user_info`, {headers: {'Fibtoken': id_token}})
                                 ]).then(
                                     axios.spread(
                                         (resp1, resp2) => {
@@ -85,6 +85,7 @@ let app_store = new Vuex.Store({
                                             if ('repo_id' in resp2.data) {
                                                 commit('setLoading', false)
                                                 localStorage.setItem('github_repo_id', resp2.data.repo_id)
+                                                localStorage.setItem('github_cname', resp2.data.domain)
                                                 app_router.push('/dashboard')
                                             } else {
                                                 commit('setLoading', false)
@@ -137,6 +138,7 @@ let app_store = new Vuex.Store({
             fibAuth.signOut()
             commit('setUser', null)
             app_router.push('/')
+            localStorage.clear()
         }
     }
 })
