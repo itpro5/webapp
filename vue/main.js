@@ -28,7 +28,7 @@ const unsubscribe = fibAuth.onAuthStateChanged((user) => {
     new Vue({
         router: app_router,
         el: '#app',
-        store: app_store,
+        store: app_store,        
         methods: {
             github_login() {
                 this.$store.dispatch('github_login')

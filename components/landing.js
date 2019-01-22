@@ -22,7 +22,7 @@ const LandingPage = {
                 </v-flex>
                 <v-flex xs12>
                     <div class="headline">
-                        It's Time to Write Your Story
+                        It's Time to Begin Your Story
                     </div>
                 </v-flex>
                 <v-flex xs12>
