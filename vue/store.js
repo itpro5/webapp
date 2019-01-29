@@ -1,12 +1,16 @@
 let app_store = new Vuex.Store({
     state: {
-        now_api_base_url: 'https://apinow-c0vqyhu7i.now.sh',
+        now_api_base_url: 'https://api.itpro5.com',
         loading: false, // sign in loading
+        app_err_msg: null, // global error message
         user: null
     },
     mutations: {
         setLoading(state, payload) {
             state.loading = payload
+        },
+        setAppErr(state, payload) {
+            state.app_err_msg = payload
         },
         setUser(state, payload) {
             state.user = payload
@@ -15,6 +19,9 @@ let app_store = new Vuex.Store({
     getters: {
         loading(state) {
             return state.loading
+        },
+        app_err_msg(state) {
+            return state.app_err_msg
         },
         user(state) {
             return state.user
@@ -28,6 +35,7 @@ let app_store = new Vuex.Store({
             console.log('github_login() - github login processing...')
             console.log('github_login() - payload: ', payload)
             commit('setLoading', true)
+            commit('setAppErr', null)
             fibAuth.signInWithPopup(githubProvider).then(
                 function(result) {
                     console.log('signInWithPopup() - getting result...')
@@ -59,12 +67,7 @@ let app_store = new Vuex.Store({
 
                         user.getIdToken(/* forceRefresh */ true).then(
                             id_token => {
-                                console.log('signInWithPopup() - getIdToken value: ', id_token)
-                                commit('setUser', {
-                                    email: user.email,
-                                    avatar: user.photoURL,
-                                    fib_token: id_token
-                                })
+                                console.log('signInWithPopup() - getIdToken value: ', id_token)                                
 
                                 //
                                 // Get extra info of user
@@ -75,13 +78,18 @@ let app_store = new Vuex.Store({
                                 ]).then(
                                     axios.spread(
                                         (resp1, resp2) => {
-                                            console.log('resp1:', resp1)
-                                            console.log('resp2:', resp2)
+                                            console.log('signInWithPopup() - get extra info of user - resp1:', resp1)
+                                            console.log('signInWithPopup() - get extra info of user - resp2:', resp2)
 
                                             localStorage.setItem('github_login', resp1.data.login)
-                                            //
-                                            // Page redirect
-                                            //                                            
+
+                                            commit('setUser', {
+                                                email: user.email,
+                                                avatar: user.photoURL,
+                                                fib_token: id_token
+                                            })
+                                            
+                                            // Page redirect                                            
                                             if ('repo_id' in resp2.data) {
                                                 commit('setLoading', false)
                                                 localStorage.setItem('github_repo_id', resp2.data.repo_id)
@@ -95,7 +103,11 @@ let app_store = new Vuex.Store({
                                     )
                                 ).catch(
                                     error => {
-                                        console.log('error:', error)
+                                        console.log('signInWithPopup() - get extra info of user - error:', error)
+                                        commit('setLoading', false)
+                                        commit('setAppErr', 'Can not login with you account. Pls try again latter.')
+                                        localStorage.clear()
+                                        app_router.push('/')
                                     }
                                 )
                             }

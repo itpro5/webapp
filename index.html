@@ -29,11 +29,14 @@
             <!-- <v-navigation-drawer app></v-navigation-drawer> -->
             <v-toolbar class="deep-purples" app>
                 <!-- <v-toolbar-side-icon></v-toolbar-side-icon> -->
-                <v-toolbar-title class="headline font-weight-regular">IT Pro5 - BETA Version</v-toolbar-title>
+                <!-- <v-toolbar-title class="headline font-weight-regular">IT Pro5 - BETA Version</v-toolbar-title> -->
+                </v-toolbar-title>
+                    <img src="img/logo.png" alt="itpro5 logo">
+                </v-toolbar-title>
                 <v-spacer></v-spacer>
                 <v-toolbar-items>
                 </v-toolbar-items>
-
+                
                 <!-- if loged-in user -->
                 <div v-if="$store.getters.user">            
                     <v-tooltip left class="hidden-xs-only">
@@ -57,9 +60,12 @@
                 <!-- end if -->
 
             </v-toolbar>
-            
+                        
             <!-- if loading -->
             <v-content v-if="!$store.getters.loading">
+                <!-- global app error message -->
+                <!-- <v-alert :value="" type="error">{{$store.getters.app_err_msg}}</v-alert> -->
+                <v-snackbar v-model="$store.getters.app_err_msg != null" top>{{$store.getters.app_err_msg}}</v-snackbar>
                 <router-view></router-view>
             </v-content>
             <!-- else -->
@@ -71,7 +77,7 @@
             </v-content>
             <!-- end if -->
             
-            <v-footer app dark>
+            <v-footer app class="grey darken-3 white--text">
                 <div class="ml-3">
                     Copyright &copy; 2018 - IT Pro5
                 </div>

@@ -64,9 +64,10 @@ const DashboardPage = {
                                 <p>This is exactly what I want too. I intend to develop a Serverless Analytic service
                                     to enable that feature, in addition to that, It would be helpful if the user is allowed
                                     to share & choose the template web page in a large Portfolio/CV market place.
-                                    To make these things happen I need your help with idea, coding or design skills.</p>
-                                <p><strong>I invite you to join ITPro5</strong>, it is an open source project,
-                                    build by enthusiasts and for community.</p>
+                                    To make these things happen I need your help with ideas, coding or design skills.</p>
+                                <p><strong>I invite you to join ITPro5</strong>, an open source project,
+                                    build by enthusiasts and for community.
+                                    <br/>Please feel free to contact me by email address: <strong>contact@itpro5.com</strong></p>
                             </v-flex>
                         </v-layout>
 

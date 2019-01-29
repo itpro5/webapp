@@ -47,8 +47,9 @@ const RegisterPage = {
                                         <v-form v-model="subdomain_reg_form_valid">
                                             <v-text-field :placeholder="get_place_holder"
                                                             suffix=".itpro5.com"
-                                                            v-model="subdomain"
-                                                            :counter="7"
+                                                            :value="subdomain"
+                                                            @input="convert_subdomain_to_lower"
+                                                            :counter="16"
                                                             :rules="subdomain_rules"
                                                             required
                                                             >
@@ -77,9 +78,9 @@ const RegisterPage = {
                                     </v-flex>
                                     <v-flex xs12 sm6 md4>
                                         <v-form>
-                                            <v-radio-group value="advanced" v-model="fork_template">
-                                                <v-radio value="advanced">
-                                                    <div slot="label">Advanced (included Portfolio & CV example pages)</div>
+                                            <v-radio-group value="advance" v-model="fork_template">
+                                                <v-radio value="advance">
+                                                    <div slot="label">Advance (included Portfolio & CV example pages)</div>
                                                 </v-radio>
                                                 <v-radio value="basic">
                                                     <div slot="label">Basic (included only CV example page)</div>
@@ -161,14 +162,17 @@ const RegisterPage = {
             subdomain_register_wait: false,
             subdomain_rules: [
                 v => !!v || 'Required',
-                v => (v && 4 <= v.length && v.length <= 7) || 'Must be from 4-7 characters'
+                v => (v && 4 <= v.length && v.length <= 16) || 'Must be from 4-16 characters',
+                v => (/^[a-z0-9_]+$/.test(v)) || 'Allow letters (a-z), numbers (0-9) and underscore (_) only',
+                v => !v.startsWith('_') || 'Not allow starts with underscore (_)',
+                v => !v.endsWith('_') || 'Not allow ends with underscore (_)'
             ],
             subdomain_reg_form_valid: false,
             subdomain_reg_alert: false,
             subdomain_reg_alert_msg: '',
             
             //-- Vars for step 2
-            fork_template: 'advanced',
+            fork_template: 'advance',
             fork_wait: false,
             fork_alert: false,
             fork_alert_msg: '',
@@ -184,8 +188,8 @@ const RegisterPage = {
     },
     computed: {
         github_repo_path: function() {
-            if (this.fork_template === 'advanced') {
-                return 'itpro5/template-basic'
+            if (this.fork_template === 'advance') {
+                return 'itpro5/template-advance'
             } else {
                 return 'itpro5/template-basic'
             }
@@ -198,6 +202,10 @@ const RegisterPage = {
         }
     },
     methods: {
+        convert_subdomain_to_lower(event) {
+            // https://stackoverflow.com/questions/42260233/vue-js-difference-between-v-model-and-v-bind
+            this.subdomain = event.toLowerCase()
+        },
         subdomain_register() {
             // waiting...
             this.subdomain_register_wait = true
