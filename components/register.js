@@ -98,29 +98,39 @@ const RegisterPage = {
                             <v-stepper-content step="3">
                                 <v-layout column align-center>
                                     <v-flex xs12>
-                                        <div class="body-2">
-                                            <a :href="forked_repo_setting_page" target="_blank">Open the Settings page</a> for the newly forked GitHub Repository, then:
+                                        <div class="body-2 red--text">
+                                            You must manually enable your GitHub Pages setting as following guide
                                         </div>
                                     </v-flex>
                                     <v-flex xs12>
+                                        <ul class="py-3 text-xs-left">
+                                            <li><a :href="forked_repo_setting_page" target="_blank">Open the Settings page</a> for the newly forked GitHub Repository</li>
+                                            <br/><v-img src="img/gitpage_setting_1.png"></v-img><br/>
+                                            <li>Scroll down to <b>GitHub Pages</b> section near the bottom</li>
+                                            <br/><v-img src="img/gitpage_setting_2.png"></v-img><br/>
+                                            <li>The value of GitHub Pages <b>Source</b> may be <b>None</b>, click <b>Source</b> dropdown list, then choose the first option (<b>master branch</b>)</li>
+                                            <br/><v-img src="img/gitpage_setting_3.png"></v-img><br/>
+                                            <li>Click <b>Save</b> button near the <b>Source</b> dropdown list</li>
+                                            <li>After saving the <b>Source</b> configuration, click the <b>Finalize</b> button bellow</li>
+                                        </ul>
                                         <v-alert type="error"
                                                     transition="scale-transition"
                                                     v-model="finalize_alert"
                                                     outline>
                                             {{ finalize_alert_msg }}
                                         </v-alert>
-                                        <ul class="py-3 text-xs-left">
-                                            <li>Scroll down to <b>GitHub Pages</b> section near the bottom</li>
-                                            <li>The value of GitHub Pages <b>Source</b> may be <b>None</b>, click <b>Source</b> dropdown list, then choose the first option (<b>master branch</b>)</li>
-                                            <li>Click <b>Save</b> button near the <b>Source</b> dropdown list</li>
-                                            <li>After saving the <b>Source</b> configuration, click the <b>Finalize</b> button bellow</li>
-                                        </ul>
                                     </v-flex>
                                     <v-flex xs12 sm6 md4>
                                         <v-form>
+                                            <v-checkbox
+                                                v-model="finalize_checked"
+                                                :rules="[v => !!v || 'You must finish setting GitHub Pages to continue!']"
+                                                label="I've finished setting GitHub Pages."
+                                                required
+                                            ></v-checkbox>
                                             <v-btn color="primary" @click="finalize"
                                                     :loading="finalize_wait"
-                                                    :disabled="finalize_wait">
+                                                    :disabled="finalize_wait || !finalize_checked">
                                                 Finalize
                                             </v-btn>
                                         </v-form>
@@ -181,6 +191,7 @@ const RegisterPage = {
             forked_repo_api_url: '',
             
             //-- Vars for step 3
+            finalize_checked: false,
             finalize_wait: false,
             finalize_alert: false,
             finalize_alert_msg: ''
@@ -358,8 +369,9 @@ const RegisterPage = {
                         )                 
                     } else {
                         vue_instance.finalize_alert = true
-                        vue_instance.finalize_alert_msg = 
-                            'The free API quota has exceeded, please try again latter...!'
+                        vue_instance.finalize_alert_msg = (result.data.code == 'GITPAGES_NOT_CONFIG') ?
+                            'You must finish setting GitHub Pages to continue!'
+                            :'The free API quota has exceeded, please try again latter...!'
                         vue_instance.finalize_wait = false
                     }
                 }

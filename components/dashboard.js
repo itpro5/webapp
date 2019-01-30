@@ -29,7 +29,9 @@ const DashboardPage = {
                             <v-flex align-self-end>
                                 <v-layout wrap fill-height align-center>
                                     <v-flex>
-                                        <div class="headline font-weight-light text-truncate primary--text">{{user_domain}}</div>
+                                        <div class="headline font-weight-light text-truncate primary--text">
+                                            <a :href="user_domain" target="_blank" style="text-decoration: none">{{user_domain}}</a>
+                                        </div>
                                         <input type="hidden" id="element_user_domain" :value="user_domain">
                                     </v-flex>
                                     <v-flex text-xs-right>

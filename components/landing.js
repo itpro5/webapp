@@ -3,7 +3,7 @@ const LandingPage = {
         <v-container grid-list-xl text-xs-center fill-height>
             <v-layout row wrap>
                 <v-flex xs12>
-                    <v-alert :value="true" color="info" icon="priority_high" outline>
+                    <v-alert :value="true" color="info" outline>
                         <div class="headline">
                             Let's Change The Way We Write & Share our Portfolio/CV
                             in Software Industry... as a Dev Guy
