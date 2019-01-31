@@ -147,7 +147,7 @@ const RegisterPage = {
                                     <v-flex xs12>
                                         <ul class="py-3 text-xs-left">
                                             <li>Now, you could visit the Dashboard page for more information</li>
-                                            <li>Please note that, you may have to wait for several minutes for sub-domain registering takes effect</li>
+                                            <li>Please note that, <span class="red--text">you may have to wait for several minutes for sub-domain registering & GitHub Pages takes effect</span></li>
                                             <li>Next step, you may want to Pull the GitHub repository and let your idea flies with HTML/CSS/JS codes</li>
                                             <li>When you're ready, Push all code changes to the GitHub repository</li>
                                         </ul>
