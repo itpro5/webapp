@@ -76,7 +76,7 @@ const LandingPage = {
                             The fish must be in water and the Portfolio/CV page must be somewhere on the internet for
                             people to browse and view its contents. That requirement brings <b>GitHub Pages</b> to life. The principle
                             is simple: you create a GitHub repository with GitHub Pages enabled, then you have
-                            an URL (e.g: <b>https://account_name.github.io/repo_name</b>) to browse any content inside that repository, <b>FREELY!<b/>`
+                            an URL (e.g: <b>account_name.github.io/repo_name</b>) to browse any content inside that repository, <b>FREELY!<b/>`
                 }, {
                     title: 'Personalization',
                     desc: `So far so good, finnaly I have a Portfolio/CV page that lives on internet with ZERO cost.
