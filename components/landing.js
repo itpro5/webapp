@@ -54,14 +54,14 @@ const LandingPage = {
                     title: 'Begin my Story',
                     desc: `Recently, my Company has bidded a banking project that requires providing CV profile for
                             each members of project's team. I realized that I do not have one (that's sound stranged). To be honest,
-                            I have been working here since the Company was founded at 2009 by my college's teacher & his friends,
+                            I have been working here since the Company was founded in 2009 by my college's teacher & his friends,
                             so I have never been in an interview and never seriously thought about CV writing.`
                 }, {
                     title: 'Find Inspiration',
                     desc: `I surfed the internet to find idea, then I found out a beaufiful CV design template.
                             I'm not a graphic designer, so I decided to learn the basics of HTML/CSS to translate the design
                             into a simple web page. That was a challenge to me because I come from the backend world...
-                            but It would be exciting, so <b>JUST DO IT!</b>`
+                            but it would be exciting, so <b>JUST DO IT!</b>`
                 }, {
                     title: 'Build a Bigger Thing',
                     desc: `I was so happy after finished developing the CV web page after 2 weeks learning HTML/CSS.
@@ -72,7 +72,7 @@ const LandingPage = {
                             to my web page without to much efforts).`
                 }, {
                     title: 'Think for the Recuiter',
-                    desc: `The story does not stop here because I could not send the HTML files to the employers, right.
+                    desc: `The story does not stop here because I could not send the HTML files to the employers, right?
                             The fish must be in water and the Portfolio/CV page must be somewhere on the internet for
                             people to browse and view its contents. That requirement brings <b>GitHub Pages</b> to life. The principle
                             is simple: you create a GitHub repository with GitHub Pages enabled, then you have
@@ -80,17 +80,17 @@ const LandingPage = {
                 }, {
                     title: 'Personalization',
                     desc: `So far so good, finnaly I have a Portfolio/CV page that lives on internet with ZERO cost.
-                            But the URL of the page does not make sense to me. I think the URL should be short and
+                            But the GitHub Pages URL of the page does not make sense to me. I think the URL should be short and
                             must tell people about its contents. I'm a developer, work in IT industry and I want to
                             introduce my IT profile to others, so a domain named <b>itprofile.com</b> looks good... but
                             <b>itpro5.com</b> is event better.`
                 }, {
                     title: 'How about Community',
                     desc: `Having <b>itpro5.com</b> domain for my profile page is awesome, but not fun when I'm alone.
-                            The developer community is very huge and maybe some dev guy will also want to have his
-                            own domain to point to theis profile web page. It would be fun when I only need the sub-domain
-                            <b>my_name.itpro5.com</b> and sharing other sub-domains to the community.
-                            And ofcourse, you will have one: <b>your_name.itpro5.com</b>.`
+                            The developer community is very huge and maybe some dev guys will also want to have his
+                            own domain for other to visit their profile web page. I only need a sub-domain
+                            <b>my_name.itpro5.com</b> and I want to share other sub-domains to the community.
+                            And of course, you will have one: <b>your_name.itpro5.com</b>.`
                 }, {
                     title: 'Connect the Dots',
                     desc: `With all above ideas, I ended up with this <b>VueJS Web App</b> where <b>you could register your URL
