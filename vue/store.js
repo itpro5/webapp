@@ -1,6 +1,6 @@
 let app_store = new Vuex.Store({
     state: {
-        now_api_base_url: 'https://api.itpro5.com',
+        now_api_base_url: 'https://itpro5api-hoangtuan151.vercel.app',
         loading: false, // sign in loading
         app_err_msg: null, // global error message
         user: null
@@ -37,9 +37,9 @@ let app_store = new Vuex.Store({
             commit('setLoading', true)
             commit('setAppErr', null)
             fibAuth.signInWithPopup(githubProvider).then(
-                function(result) {
+                function (result) {
                     console.log('signInWithPopup() - getting result...')
-                    if (result !== undefined && 'credential' in result) {                        
+                    if (result !== undefined && 'credential' in result) {
                         // This gives you a GitHub Access Token. You can use it to access the GitHub API.
                         var github_token = result.credential.accessToken
                         console.log('signInWithPopup() - github access token: ', github_token)
@@ -60,21 +60,21 @@ let app_store = new Vuex.Store({
                                 console.log('github user info error:', error)
                             }
                         )*/
-            
+
                         // The signed-in user info.
                         var user = result.user
                         console.log('signInWithPopup() - user: ', user)
 
                         user.getIdToken(/* forceRefresh */ true).then(
                             id_token => {
-                                console.log('signInWithPopup() - getIdToken value: ', id_token)                                
+                                console.log('signInWithPopup() - getIdToken value: ', id_token)
 
                                 //
                                 // Get extra info of user
                                 //
                                 axios.all([
-                                    axios.get('https://api.github.com/user', {headers: {'Authorization': 'token ' + github_token}}),
-                                    axios.get(`${state.now_api_base_url}/get_user_info`, {headers: {'Fibtoken': id_token}})
+                                    axios.get('https://api.github.com/user', { headers: { 'Authorization': 'token ' + github_token } }),
+                                    axios.get(`${state.now_api_base_url}/get_user_info`, { headers: { 'Fibtoken': id_token } })
                                 ]).then(
                                     axios.spread(
                                         (resp1, resp2) => {
@@ -88,8 +88,8 @@ let app_store = new Vuex.Store({
                                                 avatar: user.photoURL,
                                                 fib_token: id_token
                                             })
-                                            
-                                            // Page redirect                                            
+
+                                            // Page redirect
                                             if ('repo_id' in resp2.data) {
                                                 commit('setLoading', false)
                                                 localStorage.setItem('github_repo_id', resp2.data.repo_id)
@@ -115,11 +115,11 @@ let app_store = new Vuex.Store({
                             error => {
                                 console.log('signInWithPopup() - getIdToken error: ', error.message)
                             }
-                        )                        
-                    }                    
+                        )
+                    }
                 }
             ).catch(
-                function(error) {
+                function (error) {
                     var errorCode = error.code
                     var errorMessage = error.message
                     console.log('signInWithPopup() - error: ', errorMessage)
@@ -127,7 +127,7 @@ let app_store = new Vuex.Store({
                 }
             )
         },
-        auto_login({commit}, /* user */ payload) {
+        auto_login({ commit }, /* user */ payload) {
             console.log('auto_login() begin...')
             payload.getIdToken(/* forceRefresh */ true).then(
                 id_token => {
@@ -145,7 +145,7 @@ let app_store = new Vuex.Store({
                 }
             )
         },
-        logout({commit}, payload) {
+        logout({ commit }, payload) {
             console.log('logout() begin...')
             fibAuth.signOut()
             commit('setUser', null)
