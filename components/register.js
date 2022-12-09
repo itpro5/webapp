@@ -46,7 +46,7 @@ const RegisterPage = {
                                     <v-flex xs12 sm6 md4>
                                         <v-form v-model="subdomain_reg_form_valid">
                                             <v-text-field :placeholder="get_place_holder"
-                                                            suffix=".itpro5.com"
+                                                            suffix="-itpro5.vapps.fun"
                                                             :value="subdomain"
                                                             @input="convert_subdomain_to_lower"
                                                             :counter="16"
@@ -55,7 +55,7 @@ const RegisterPage = {
                                                             >
                                             </v-text-field>
                                             <v-btn color="primary" @click="subdomain_register"
-                                                    :loading="subdomain_register_wait" 
+                                                    :loading="subdomain_register_wait"
                                                     :disabled="!subdomain_reg_form_valid || subdomain_register_wait">
                                                 Register
                                             </v-btn>
@@ -163,10 +163,10 @@ const RegisterPage = {
             </v-layout>
         </v-container>
     `,
-    data: function() {
+    data: function () {
         return {
             current_step: 1,
-            
+
             //-- Vars for step 1
             subdomain: '',
             subdomain_register_wait: false,
@@ -180,7 +180,7 @@ const RegisterPage = {
             subdomain_reg_form_valid: false,
             subdomain_reg_alert: false,
             subdomain_reg_alert_msg: '',
-            
+
             //-- Vars for step 2
             fork_template: 'advance',
             fork_wait: false,
@@ -189,7 +189,7 @@ const RegisterPage = {
             forked_repo_id: null,
             forked_repo_url: '',
             forked_repo_api_url: '',
-            
+
             //-- Vars for step 3
             finalize_checked: false,
             finalize_wait: false,
@@ -198,17 +198,17 @@ const RegisterPage = {
         }
     },
     computed: {
-        github_repo_path: function() {
+        github_repo_path: function () {
             if (this.fork_template === 'advance') {
                 return 'itpro5/template-advance'
             } else {
                 return 'itpro5/template-basic'
             }
         },
-        forked_repo_setting_page: function() {
+        forked_repo_setting_page: function () {
             return this.forked_repo_url + '/settings'
         },
-        get_place_holder: function() {
+        get_place_holder: function () {
             return localStorage.getItem('github_login')
         }
     },
@@ -223,15 +223,15 @@ const RegisterPage = {
 
             const github_login = localStorage.getItem('github_login')
             const vue_instance = this
-            const post_url = `${this.$store.getters.now_api_base_url}/reg_domain?subdomain=${this.subdomain}&github_login=${github_login}`            
+            const post_url = `${this.$store.getters.now_api_base_url}/reg_domain?subdomain=${this.subdomain}&github_login=${github_login}`
             axios.post(post_url, {}, {
-                headers: {'Fibtoken': this.$store.getters.user.fib_token}
+                headers: { 'Fibtoken': this.$store.getters.user.fib_token }
             }).then(
                 result => {
                     console.log('subdomain_register() result: ', result)
                     if (result && result.data.code == 'TAKEN') {
                         vue_instance.subdomain_reg_alert = true
-                        vue_instance.subdomain_reg_alert_msg = 
+                        vue_instance.subdomain_reg_alert_msg =
                             'This domain is taken, please choose another one.'
                     } else if (result && result.data.code == 'CONT') {
                         vue_instance.current_step = 2
@@ -240,7 +240,7 @@ const RegisterPage = {
                         vue_instance.subdomain_reg_alert_msg = ''
                     } else {
                         vue_instance.subdomain_reg_alert = true
-                        vue_instance.subdomain_reg_alert_msg = 
+                        vue_instance.subdomain_reg_alert_msg =
                             'The free API quota has exceeded, please try again latter.'
                     }
                     vue_instance.subdomain_register_wait = false
@@ -249,7 +249,7 @@ const RegisterPage = {
                 error => {
                     console.log('subdomain_register() error: ', error)
                     vue_instance.subdomain_reg_alert = true
-                    vue_instance.subdomain_reg_alert_msg = 
+                    vue_instance.subdomain_reg_alert_msg =
                         'The free API quota has exceeded, please try again latter...!'
                     vue_instance.subdomain_register_wait = false
                 }
@@ -258,20 +258,20 @@ const RegisterPage = {
         subdomain_register_cloudfunctions() {
             // waiting...
             this.subdomain_register_wait = true
-            
-            // API call            
+
+            // API call
             //
             // For more info, visit
             // https://stackoverflow.com/questions/48080130/why-cant-i-access-vuejs-this-within-firebase-then-callbacks
             //
             const vue_instance = this
-            fibFunc.httpsCallable('RegisterDomain')({subdomain: this.subdomain}).then(
-                function(result) {
-                    
+            fibFunc.httpsCallable('RegisterDomain')({ subdomain: this.subdomain }).then(
+                function (result) {
+
                 }
             ).catch(
-                function(error) {
-                    
+                function (error) {
+
                 }
             )
             // setTimeout(() => {
@@ -287,7 +287,7 @@ const RegisterPage = {
             const vue_instance = this
             const post_url = `${this.$store.getters.now_api_base_url}/fork_repo?repo_path=${this.github_repo_path}`
             axios.post(post_url, {}, {
-                headers: {'github-token': github_token}
+                headers: { 'github-token': github_token }
             }).then(
                 result => {
                     console.log('fork_now() result: ', result)
@@ -295,7 +295,7 @@ const RegisterPage = {
                         this.forked_repo_id = result.data.repo_id
                         this.forked_repo_url = result.data.forked_url
                         this.forked_repo_api_url = result.data.api_url
-                        
+
                         if (this.forked_repo_url != ''
                             && this.forked_repo_api_url != ''
                             && this.forked_repo_id) {
@@ -304,10 +304,10 @@ const RegisterPage = {
                         }
                         // reset
                         vue_instance.fork_alert = false
-                        vue_instance.fork_alert_msg = ''                        
+                        vue_instance.fork_alert_msg = ''
                     } else {
                         vue_instance.fork_alert = true
-                        vue_instance.fork_alert_msg = 
+                        vue_instance.fork_alert_msg =
                             'The free API quota has exceeded, please try again latter...!'
                     }
                     vue_instance.fork_wait = false
@@ -316,7 +316,7 @@ const RegisterPage = {
                 error => {
                     console.log('fork_now() error: ', error)
                     vue_instance.fork_alert = true
-                    vue_instance.fork_alert_msg = 
+                    vue_instance.fork_alert_msg =
                         'The free API quota has exceeded, please try again latter...!'
                     vue_instance.fork_wait = false
                 }
@@ -324,7 +324,7 @@ const RegisterPage = {
         },
         finalize() {
             this.finalize_wait = true
-            
+
             const github_token = localStorage.getItem('github_token')
             const vue_instance = this
             const post_url = `${this.$store.getters.now_api_base_url}/cname_commit`
@@ -332,15 +332,15 @@ const RegisterPage = {
                 forked_repo_api_url: this.forked_repo_api_url,
                 cname: this.subdomain
             }, {
-                headers: {'github-token': github_token}
+                headers: { 'github-token': github_token }
             }).then(
                 result => {
                     console.log('finalize() result: ', result)
                     if (result && result.data.code == 'OK') {
                         // Assign repo to user
-                        const url2 = `${this.$store.getters.now_api_base_url}/assign_repo?subdomain=${this.subdomain}&repoid=${this.forked_repo_id}`            
+                        const url2 = `${this.$store.getters.now_api_base_url}/assign_repo?subdomain=${this.subdomain}&repoid=${this.forked_repo_id}`
                         axios.post(url2, {}, {
-                            headers: {'Fibtoken': this.$store.getters.user.fib_token}
+                            headers: { 'Fibtoken': this.$store.getters.user.fib_token }
                         }).then(
                             result => {
                                 console.log('assign_repo() result: ', result)
@@ -353,7 +353,7 @@ const RegisterPage = {
                                     vue_instance.finalize_alert_msg = ''
                                 } else {
                                     vue_instance.finalize_alert = true
-                                    vue_instance.finalize_alert_msg = 
+                                    vue_instance.finalize_alert_msg =
                                         'The free API quota has exceeded, please try again latter...!'
                                 }
                                 vue_instance.finalize_wait = false
@@ -362,16 +362,16 @@ const RegisterPage = {
                             error => {
                                 console.log('assign_repo() error: ', error)
                                 vue_instance.finalize_alert = true
-                                vue_instance.finalize_alert_msg = 
+                                vue_instance.finalize_alert_msg =
                                     'The free API quota has exceeded, please try again latter...!'
                                 vue_instance.finalize_wait = false
                             }
-                        )                 
+                        )
                     } else {
                         vue_instance.finalize_alert = true
                         vue_instance.finalize_alert_msg = (result.data.code == 'GITPAGES_NOT_CONFIG') ?
                             'You must finish setting GitHub Pages to continue!'
-                            :'The free API quota has exceeded, please try again latter...!'
+                            : 'The free API quota has exceeded, please try again latter...!'
                         vue_instance.finalize_wait = false
                     }
                 }
@@ -379,7 +379,7 @@ const RegisterPage = {
                 error => {
                     console.log('finalize() error: ', error)
                     vue_instance.finalize_alert = true
-                    vue_instance.finalize_alert_msg = 
+                    vue_instance.finalize_alert_msg =
                         'The free API quota has exceeded, please try again latter...!'
                     vue_instance.finalize_wait = false
                 }
