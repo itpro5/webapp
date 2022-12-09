@@ -206,7 +206,7 @@ const RegisterPage = {
             }
         },
         forked_repo_setting_page: function () {
-            return this.forked_repo_url + '/settings'
+            return this.forked_repo_url + '/settings/pages'
         },
         get_place_holder: function () {
             return localStorage.getItem('github_login')
