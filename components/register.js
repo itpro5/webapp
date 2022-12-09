@@ -377,44 +377,11 @@ const RegisterPage = {
                 }
             ).catch(
                 error => {
-                    if (error.response.status == 504) {
-                        // Assign repo to user
-                        const url2 = `${this.$store.getters.now_api_base_url}/assign_repo?subdomain=${this.subdomain}&repoid=${this.forked_repo_id}`
-                        axios.post(url2, {}, {
-                            headers: { 'Fibtoken': this.$store.getters.user.fib_token }
-                        }).then(
-                            result => {
-                                console.log('assign_repo() result: ', result)
-                                if (result && result.data.code == 'OK') {
-                                    localStorage.setItem('github_cname', this.subdomain)
-                                    // Move forward
-                                    this.current_step = 4
-                                    // Reset
-                                    vue_instance.finalize_alert = false
-                                    vue_instance.finalize_alert_msg = ''
-                                } else {
-                                    vue_instance.finalize_alert = true
-                                    vue_instance.finalize_alert_msg =
-                                        'The free API quota has exceeded, please try again latter...!'
-                                }
-                                vue_instance.finalize_wait = false
-                            }
-                        ).catch(
-                            error => {
-                                console.log('assign_repo() error: ', error)
-                                vue_instance.finalize_alert = true
-                                vue_instance.finalize_alert_msg =
-                                    'The free API quota has exceeded, please try again latter...!'
-                                vue_instance.finalize_wait = false
-                            }
-                        )
-                    } else {
-                        console.log('finalize() error: ', error)
-                        vue_instance.finalize_alert = true
-                        vue_instance.finalize_alert_msg =
-                            'The free API quota has exceeded, please try again latter...!'
-                        vue_instance.finalize_wait = false
-                    }
+                    console.log('finalize() error: ', error)
+                    vue_instance.finalize_alert = true
+                    vue_instance.finalize_alert_msg =
+                        'The free API quota has exceeded, please try again latter...!'
+                    vue_instance.finalize_wait = false
                 }
             )
         }
