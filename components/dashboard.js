@@ -79,7 +79,7 @@ const DashboardPage = {
             </v-layout>
         </v-container>
     `,
-    data: function() {
+    data: function () {
         return {
             repo_views: null,
             repo_unique_visitors: null,
@@ -89,8 +89,8 @@ const DashboardPage = {
         }
     },
     computed: {
-        user_domain: function() {
-            return 'https://' + this.github_cname + '.itpro5.com'
+        user_domain: function () {
+            return 'https://' + this.github_cname + '-itpro5.vapps.fun'
         }
     },
     methods: {
@@ -99,8 +99,8 @@ const DashboardPage = {
         },
         share_btn_click() {
             var url = 'https://www.facebook.com/sharer/sharer.php?u=@url&quote=@quote'
-                        .replace(/@url/g, encodeURIComponent(this.user_domain))
-                        .replace(/@quote/g, encodeURIComponent('Let\'s Change The Way We Write & Share our Portfolio/CV in Software Industry... as a Dev Guy'))
+                .replace(/@url/g, encodeURIComponent(this.user_domain))
+                .replace(/@quote/g, encodeURIComponent('Let\'s Change The Way We Write & Share our Portfolio/CV in Software Industry... as a Dev Guy'))
             window.open(url, '_blank')
         },
         copy_btn_click() {
@@ -109,12 +109,12 @@ const DashboardPage = {
             item.select()
             document.execCommand('copy')
             item.setAttribute('type', 'hidden')
-            
+
             this.snackbar_text = 'Your itpro5 URL was copied.'
             this.snackbar_show = true
         }
     },
-    created: function() {
+    created: function () {
         const user_repo_id = localStorage.getItem('github_repo_id')
         const github_token = localStorage.getItem('github_token')
         this.github_cname = localStorage.getItem('github_cname')
