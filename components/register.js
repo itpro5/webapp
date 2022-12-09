@@ -377,7 +377,7 @@ const RegisterPage = {
                 }
             ).catch(
                 error => {
-                    console.log('finalize() error: ', error)
+                    console.log('finalize() error: ', error.response)
                     vue_instance.finalize_alert = true
                     vue_instance.finalize_alert_msg =
                         'The free API quota has exceeded, please try again latter...!'
